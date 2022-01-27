@@ -42,7 +42,7 @@ export async function processEvent(event, { config }) {
         const response = await executeQuery(query, [], config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
         {
-            console.log(`No Response!!! ${response.error}`)
+            console.log(`No Response!!! ${response} ${response.error} ${response.queryResult} ${response.queryResult.rowCount}`)
             return event
         }
         let userProps = {}
@@ -80,7 +80,7 @@ export async function processEvent(event, { config }) {
     return event
 }
 
-const executeQuery = async (query,values,config) => {
+async function executeQuery (query,values,config){
     const pgClient = new Client({
         user: config.dbUsername,
         password: config.dbPassword,
