@@ -96,6 +96,7 @@ const executeQuery = async (query,values,config) => {
         queryResult = await pgClient.query(query, values)
     } catch (err) {
         error = err
+        console.log(error)
     }
 
     await pgClient.end()
