@@ -42,6 +42,7 @@ export async function processEvent(event, { config }) {
         console.log(query)
         const response = await executeQuery(query, [], config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
+            console.log(`No Response!!! ${response.error}`)
             return event
         let userProps = {}
         console.log(response.queryResult.rows[0])
