@@ -38,8 +38,9 @@ export async function processEvent(event, { config }) {
         let query = `SELECT * FROM analytics.user_subscripton_details ORDER BY purchase_date desc limit 1`
         console.log(query)
         const response = await executeQuery(query, config);
-        if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
+        if (!response || response.error || !response.queryResult || response.queryResult.rows.length < 1)
         {
+            console.log(`Row Count ${response.queryResult.rows.length}`)
             console.log(`No Response!!! ${JSON.stringify(response)} ${response.error} ${JSON.stringify(response.queryResult)} ${response.queryResult.rowCount}`)
             return event
         }
