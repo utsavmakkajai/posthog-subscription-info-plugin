@@ -21,9 +21,9 @@ export async function setupPlugin({ config }) {
 
     const totalRowsResult = await executeQuery(
         `SELECT COUNT(1) FROM ${sanitizeSqlIdentifier(config.tableName)}`,
-        [],
         config
     )
+    console.log(totalRowsResult)
 
     if (!totalRowsResult || totalRowsResult.error || !totalRowsResult.queryResult) {
         throw new Error('Unable to connect to Redshift!')
@@ -37,7 +37,7 @@ export async function processEvent(event, { config }) {
     if(analyticsId) {
         let query = `SELECT * FROM ${sanitizeSqlIdentifier(config.tableName)} WHERE analytics_id = '${analyticsId}' ORDER BY purchase_date desc`
         console.log(query)
-        const response = await executeQuery(query, [], config);
+        const response = await executeQuery(query, config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
         {
             console.log(`No Response!!! ${response.toString()} ${response.error} ${response.queryResult} ${response.queryResult.rowCount}`)
@@ -78,7 +78,7 @@ export async function processEvent(event, { config }) {
     return event
 }
 
-async function executeQuery (query,values,config){
+async function executeQuery (query,config){
     const pgClient = new Client({
         user: config.dbUsername,
         password: config.dbPassword,
@@ -92,7 +92,7 @@ async function executeQuery (query,values,config){
     let error = null
     let queryResult = null
     try {
-        queryResult = await pgClient.query(query, values)
+        queryResult = await pgClient.query(query)
     } catch (err) {
         error = err
     }
