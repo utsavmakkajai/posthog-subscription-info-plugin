@@ -2,7 +2,7 @@
     "name": "User Subscription Information Enricher Plugin",
     "url": "https://github.com/utsavmakkajai/posthog-subscription-info-plugin",
     "description": "Enrich events with users subscription information",
-    "main": "index.ts",
+    "main": "index.js",
     "posthogVersion": ">= 1.25.0",
     "config": [
         {
