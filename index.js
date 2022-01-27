@@ -35,7 +35,7 @@ export async function processEvent(event, { config }) {
     let analyticsId = event['distinct_id']
     console.log(`Checking ${analyticsId} for user props`)
     if(analyticsId) {
-        let query = `SELECT * FROM analytics.user_subscripton_details ORDER BY purchase_date desc limit 1`
+        let query = `SELECT * FROM ${sanitizeSqlIdentifier(config.tableName)} WHERE analytics_id = '${analyticsId}' ORDER BY purchase_date desc`
         console.log(query)
         const response = await executeQuery(query, config);
         if (!response || response.error || !response.queryResult || response.queryResult.rows.length < 1)
@@ -75,7 +75,7 @@ export async function processEvent(event, { config }) {
                     break   
             }
         }
-        console.log(`User prop for ${analyticsId} is ${userProps}`)
+        console.log(`User prop for ${analyticsId} is ${JSON.stringify(userProps)}`)
     }
     return event
 }
