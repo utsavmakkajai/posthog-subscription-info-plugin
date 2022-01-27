@@ -39,11 +39,12 @@ export async function processEvent(event, { config }) {
                         FROM ${sanitizeSqlIdentifier(config.tableName)} 
                         WHERE analytics_id = '${analyticsId}' 
                         ORDER BY purchase_date desc`
-        console.log(query)
         const response = await executeQuery(query, [], config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
+        {
             console.log(`No Response!!! ${response.error}`)
             return event
+        }
         let userProps = {}
         console.log(response.queryResult.rows[0])
         for (const [colName, colValue] of Object.entries(response.queryResult.rows[0])) {
@@ -96,7 +97,6 @@ const executeQuery = async (query,values,config) => {
         queryResult = await pgClient.query(query, values)
     } catch (err) {
         error = err
-        console.log(error)
     }
 
     await pgClient.end()
