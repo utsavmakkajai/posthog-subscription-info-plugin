@@ -2,6 +2,10 @@ import { Plugin, PluginEvent, PluginMeta } from '@posthog/plugin-scaffold'
 import { Client, QueryResult, QueryResultRow } from 'pg'
 
 
+const sanitizeSqlIdentifier = (unquotedIdentifier) => {
+    return unquotedIdentifier.replace(/[^\w\d_.]+/g, '')
+}
+
 // Plugin method that runs on plugin load
 export async function setupPlugin({ config }) {
     const requiredConfigOptions = ['clusterHost', 'clusterPort', 'dbName', 'dbUsername', 'dbPassword']
