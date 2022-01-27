@@ -35,15 +35,16 @@ export async function processEvent(event, { config }) {
     let analyticsId = event['distinct_id']
     console.log(`Checking ${analyticsId} for user props`)
     if(analyticsId) {
-        let query = `SELECT * FROM ${sanitizeSqlIdentifier(config.tableName)} WHERE analytics_id = '${analyticsId}' ORDER BY purchase_date desc`
+        let query = `SELECT * FROM analytics.user_subscripton_details ORDER BY purchase_date desc limit 1`
         console.log(query)
         const response = await executeQuery(query, config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
         {
-            console.log(`No Response!!! ${response.toString()} ${response.error} ${response.queryResult} ${response.queryResult.rowCount}`)
+            console.log(`No Response!!! ${JSON.stringify(response)} ${response.error} ${JSON.stringify(response.queryResult)} ${response.queryResult.rowCount}`)
             return event
         }
         let userProps = {}
+        console.log("############ FOUND RECORD ##################")
         console.log(response.queryResult.rows[0])
         for (const [colName, colValue] of Object.entries(response.queryResult.rows[0])) {
             switch(colName){
