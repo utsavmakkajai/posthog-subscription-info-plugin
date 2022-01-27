@@ -39,10 +39,12 @@ export async function processEvent(event, { config }) {
                         FROM ${sanitizeSqlIdentifier(config.tableName)} 
                         WHERE analytics_id = '${analyticsId}' 
                         ORDER BY purchase_date desc`
+        console.log(query)
         const response = await executeQuery(query, [], config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
             return event
         let userProps = {}
+        console.log(response.queryResult.rows[0])
         for (const [colName, colValue] of Object.entries(response.queryResult.rows[0])) {
             switch(colName){
                 case 'customer_type':
@@ -67,7 +69,7 @@ export async function processEvent(event, { config }) {
                     userProps['App_Code'] = colValue ?? ""
                     break 
                 case 'auto_renew_status':
-                    userProps['Auto_Renew_Status'] = colValue?? ""
+                    userProps['Auto_Renew_Status'] = colValue ?? ""
                     break   
             }
         }
