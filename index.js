@@ -103,3 +103,8 @@ async function executeQuery (query,values,config){
 
     return { error, queryResult }
 }
+
+module.exports = {
+    setupPlugin,
+    processEvent
+}
