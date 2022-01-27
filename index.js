@@ -35,10 +35,8 @@ export async function processEvent(event, { config }) {
     let analyticsId = event['distinct_id']
     console.log(`Checking ${analyticsId} for user props`)
     if(analyticsId) {
-        let query = `SELECT * 
-                        FROM ${sanitizeSqlIdentifier(config.tableName)} 
-                        WHERE analytics_id = '${analyticsId}' 
-                        ORDER BY purchase_date desc`
+        let query = `SELECT * FROM ${sanitizeSqlIdentifier(config.tableName)} WHERE analytics_id = '${analyticsId}' ORDER BY purchase_date desc`
+        console.log(query)
         const response = await executeQuery(query, [], config);
         if (!response || response.error || !response.queryResult || response.queryResult.rowCount < 1)
         {
