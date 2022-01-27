@@ -33,6 +33,7 @@ export async function setupPlugin({ config }) {
 // Plugin method that processes event
 export async function processEvent(event, { config }) {
     let analyticsId = event['distinct_id']
+    console.log(`Checking ${analyticsId} for user props`)
     if(analyticsId) {
         let query = `SELECT * 
                         FROM ${sanitizeSqlIdentifier(config.tableName)} 
