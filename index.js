@@ -76,9 +76,7 @@ export async function processEvent(event, { config }) {
             }
         }
         console.log(`User prop for ${analyticsId} is ${JSON.stringify(userProps)}`)
-        event.properties[`$set`] = {
-            'subscription_properties' : userProps
-        }
+        event.properties[`$set`] = userProps
         console.log(JSON.stringify(event))
     }
     return event
